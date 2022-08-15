@@ -5,7 +5,7 @@ import SignUpProgress from "../ui/SignUpProgress";
 
 const SignUp = () => {
   return (
-    <>
+    <div className=" p-4 py-8 md:p-8 ">
       <div className="flex  flex-row-reverse items-center">
         {/* label */}
         <div className=" relative">
@@ -58,7 +58,7 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

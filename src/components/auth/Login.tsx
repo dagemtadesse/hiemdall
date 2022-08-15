@@ -1,8 +1,8 @@
 import React from "react";
 const Login = () => {
   return (
-    <>
-      <div className="max-w-sm md:mt-16">
+    <div className=" p-4 py-8 md:p-8 ">
+      <div className="max-w-sm md:mt-16 ">
         <h1 className="text-3xl text-gray-700">Welcome, Login</h1>
         <p className="text-sm mt-1 text-gray-600">
           Provide your phone number or email address and password to log in as a
@@ -47,7 +47,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

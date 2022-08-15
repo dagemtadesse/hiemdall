@@ -5,10 +5,12 @@ import RoleButtons from "./components/auth/RoleButtons";
 import SignUp from "./components/auth/SignUp";
 import LanguageChoice from "./components/LanguageChoice";
 import SideNav from "./components/layout/SideNav";
+import ProfilePage from "./pages/Profile";
+import StudentListPage from "./pages/StudentList";
 
 function App() {
   return (
-    <div className="flex flex-col md:grid md:grid-cols-4 w-screen min-h-screen relative">
+    <div className="font-body flex flex-col md:grid md:grid-cols-4 w-screen min-h-screen relative">
       <SideNav />
 
       <div className="bg-white col-span-3 grow">
@@ -18,11 +20,14 @@ function App() {
           <RoleButtons />
         </div>
         {/* loging */}
-        <div className="p-4 py-8 md:p-8 ">
+        {/* p-4 py-8 md:p-8 */}
+        <div className=" ">
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup/*" element={<SignUp />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/student-list" element={<StudentListPage />} />
           </Routes>
         </div>
       </div>
