@@ -1209,6 +1209,10 @@ video {
     margin-top: 8rem;
   }
 
+  .md\:ml-8{
+    margin-left: 2rem;
+  }
+
   .md\:block{
     display: block;
   }

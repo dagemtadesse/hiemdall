@@ -1,10 +1,17 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { UserContext } from "../../store/UserContext";
 
 const RoleButtons = () => {
   const { search } = useLocation();
+  const userCtx = useContext(UserContext);
+
   const role = new URLSearchParams(search).get("role") || "student";
+
+  useEffect(() => {
+    userCtx.setRole(role == "student" ? "student" : "admin");
+  }, [role]);
 
   let buttonStyle = (link: string) => classNames({
     "px-6 py-3 md:py-1.5 grow md:grow-0 uppercase flex items-center justify-center": true,

@@ -1,5 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router";
+import { UserContext } from "../../store/UserContext";
+
 const Login = () => {
+  const navigate = useNavigate()
+  const userContext = useContext(UserContext);
+
+  const handleLogin = (event: any) =>{
+    event.preventDefault();
+
+    userContext.login()
+    navigate("/profile");
+  }
+
   return (
     <div className=" p-4 py-8 md:p-8 ">
       <div className="max-w-sm md:mt-16 ">
@@ -41,7 +54,10 @@ const Login = () => {
           </div>
 
           <div className="flex justify-end">
-            <button className="bg-primaryOrange px-8 py-2 rounded-full mt-8 text-white ml-auto uppercase text-md">
+            <button
+              className="bg-primaryOrange px-8 py-2 rounded-full mt-8 text-white ml-auto uppercase text-md"
+              onClick={handleLogin}
+            >
               Login
             </button>
           </div>
