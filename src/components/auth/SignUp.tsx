@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "../ui/Inputs";
-import SignUpProgress from "../ui/SignUpProgres";
+import SignUpProgressCheckPoint from "../ui/SignUpProgresCheckPoints";
+import SignUpProgress from "../ui/SignUpProgress";
 
 const SignUp = () => {
   return (
@@ -8,23 +9,7 @@ const SignUp = () => {
       <div className="flex  flex-row-reverse items-center">
         {/* label */}
         <div className=" relative">
-          <SignUpProgress
-            status="notStarted"
-            step={1}
-            label="Basic Information"
-          />
-          <SignUpProgress status="completed" step={2} label="Address" />
-          <SignUpProgress
-            status="onProgress"
-            step={3}
-            label="Education Background"
-          />
-          <SignUpProgress status="notStarted" step={4} label="Password" />
-          <SignUpProgress
-            status="notStarted"
-            step={5}
-            label="Terms & Service"
-          />
+          <SignUpProgress />
           <div className="h-full absolute left-7 z-0 border-r border-gray-500 top-0"></div>
         </div>
 
@@ -33,8 +18,8 @@ const SignUp = () => {
             <h1 className="text-3xl text-gray-700">Welcome, Register</h1>
             <p className="text-sm mt-2 text-gray-600">
               This is a little background about Burayu TVET college. Something
-              to showoff its legitmate. This is a little background about Burayu TVET college. Something
-              to showoff its legitmate.
+              to showoff its legitmate. This is a little background about Burayu
+              TVET college. Something to showoff its legitmate.
             </p>
             <p className="text-gray-800 mt-3 text-sm">
               Please provide all the fields marked with{" "}
