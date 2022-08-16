@@ -30,7 +30,7 @@ const SignUpProgressCheckPoint = ({
         <NavLink
           to={link}
           className={(navData) => {
-            if (navData.isActive) setCurrent(step);
+            // if (navData.isActive) setTimeout(() => setCurrent(step));
             return "";
           }}
         >

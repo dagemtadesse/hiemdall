@@ -17,18 +17,14 @@ const PROGRESSCHECKPOINTS = [
   {
     label: "Password",
     link: "password",
-  },
-  {
-    label: "Terms & Service",
-    link: "terms_&_service",
-  },
+  }
 ];
 
 const SignUpProgress = () => {
   const [currentPoint, setCurrentPoint] = useState(1);
 
   return (
-    <>
+    <div className="relative">
       {PROGRESSCHECKPOINTS.map(({ label, link }, index) => {
         return (
           <SignUpProgressCheckPoint
@@ -41,7 +37,8 @@ const SignUpProgress = () => {
           />
         );
       })}
-    </>
+      <div className="h-full absolute left-7 z-0 border-r border-gray-500 top-0"></div>
+    </div>
   );
 };
 
