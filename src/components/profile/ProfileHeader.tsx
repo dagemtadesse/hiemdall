@@ -15,24 +15,24 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 }) => {
   return (
     <>
-      <div className="w-full h-[150px] bg-darkBrown p-4">
-        {active && (
-          <div className="max-w-4xl mx-auto flex flex-row-reverse ">
-            <button className="text-white border-2 border-white px-4 py-1 rounded-full text-sm">
+      <div className="w-full h-[150px] bg-darkBrown ">
+        {/* {active && ( */}
+          <div className="max-w-4xl mx-auto flex  flex-col-reverse md:flex-col justify-end md:justify-between h-full items-end p-0 md:p-4">
+            <button className="text-white border-2 border-white px-4 py-1 rounded-full text-sm mt-4 md:m-0 mr-2 ">
               Change Photo
             </button>
-          </div>
-        )}
 
-        
+            <ProfileNavigation />
+          </div>
+        {/* )} */}
       </div>
 
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-start">
+      <div className="max-w-4xl mx-auto px-2">
+        <div className="md:flex">
           <div className="w-[120px] h-[120px] border-2 border-white -mt-[60px] rounded-full overflow-hidden">
             <img src={doug} />
           </div>
-          <div className="text-sm ml-2">
+          <div className="text-sm m-2  ml-0 md:mt-0">
             <h2 className="font-medium">{name}</h2>
             <p className="text-gray-900 mt-0.5">
               {role === "admin" && (
@@ -47,7 +47,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               )}
             </p>
           </div>
-          <ProfileNavigation />
         </div>
       </div>
     </>

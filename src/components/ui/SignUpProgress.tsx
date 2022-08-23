@@ -24,7 +24,7 @@ const SignUpProgress = () => {
   const [currentPoint, setCurrentPoint] = useState(1);
 
   return (
-    <div className="relative">
+    <div className="relative flex md:block overflow-x-auto w-full md:w-auto h-full gap-x-6 mb-4">
       {PROGRESSCHECKPOINTS.map(({ label, link }, index) => {
         return (
           <SignUpProgressCheckPoint
@@ -37,7 +37,7 @@ const SignUpProgress = () => {
           />
         );
       })}
-      <div className="h-full absolute left-7 z-0 border-r border-gray-500 top-0"></div>
+      <div className="md:h-full w-full  inline-block md:w-0 absolute md:left-7 z-0 border-t md:border-t-0 md:border-r border-gray-500 top-5 md:top-0"></div>
     </div>
   );
 };

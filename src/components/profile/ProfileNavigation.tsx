@@ -11,7 +11,7 @@ const ProfileNavigation = () => {
     });
 
   return (
-    <div className="inline-flex items-start -mt-4 text-sm overflow-hidden rounded-full ml-auto">
+    <div className="w-full flex md:w-auto text-sm overflow-hidden md:rounded-full">
       <NavLink
         className={(navData) => buttonStyle(navData.isActive)}
         to="/student-list"

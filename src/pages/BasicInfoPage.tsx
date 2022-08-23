@@ -4,7 +4,7 @@ import Input from "../components/ui/Inputs";
 
 const BasicInfoPage = () => {
   return (
-    <form className="grid grid-cols-2 grow gap-x-4 gap-y-6">
+    <form className="grid md:grid-cols-2 grow gap-x-4 gap-y-4">
       <Input label="Full Name" id="name" type="text" required={true} />
       <Input
         label="Nationality"
@@ -21,7 +21,7 @@ const BasicInfoPage = () => {
       <Input label="Email" id="email_input" type="email" required={true} />
       <Input
         label="Date of Birth"
-        className="col-span-2"
+        className="md:col-span-2"
         id="email_input"
         type="email"
         required={true}

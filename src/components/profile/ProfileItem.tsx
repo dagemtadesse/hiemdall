@@ -15,15 +15,15 @@ const ProfileItem = ({ field, value }: ProfileFiled) => {
   const [editing, setEditing] = useState(false);
 
   return (
-    <div className="border-b border-gray-200 items-center grid grid-cols-12 py-3.5 px-3 mt-2">
-      <p className="text-gray-600 text-md col-span-3"> {field} </p>
+    <div className="border-b border-gray-200 items-center grid grid-cols-12 py-3.5 px-3 mt-2 gap-y-3">
+      <p className="text-gray-600 text-md md:col-span-3 col-span-12"> {field} </p>
 
-      <section className="text-base text-gray-800 col-span-7">
+      <section className="text-base text-gray-800 md:col-span-7 col-span-9">
         {!editing && value}
         {editing && <input value={value} type="" className="border border-gray-300 py-1.5 px-3 rounded w-4/5"/>}
       </section>
 
-      <section className="col-span-2 flex flex-row-reverse gap-4">
+      <section className="col-span-3 md:col-span-2 flex flex-row-reverse gap-4">
         {editing && (
           <>
             <TextButton onClick={() => setEditing(false)} label="Cancle" />

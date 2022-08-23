@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Input from "../components/ui/Inputs";
 import SignUpProgress from "../components/ui/SignUpProgress";
 
 const SignUpPage = () => {
@@ -20,7 +19,7 @@ const SignUpPage = () => {
           </p>
         </div>
 
-        <div className="flex items-start">
+        <div className="flex flex-col-reverse md:flex-row md:items-start">
           {/* forms */}
           <Outlet />
           {/* progress */}

@@ -19,18 +19,18 @@ const SignUpProgressCheckPoint = ({
   setCurrent,
 }: ProgressItem) => {
   const indexStyle = classNames({
-    "flex  border justify-center z-10 bg-white items-center rounded-full w-7 h-7 mr-6 ml-4": true,
+    "flex border justify-center z-10 bg-white items-center self-center rounded-full w-7 h-7 mr-6 ml-4": true,
     "bg-primaryOrange border-primaryOrange text-white": step === current,
     "text-gray-700": step > current,
   });
 
   return (
-    <div className="flex flex-row-reverse py-2 items-center">
-      <section className="text-sm text-gray-700 w-48 ">
+    <div className="flex flex-col-reverse items-start md:flex-row-reverse py-2 md:items-center gap-y-2">
+      <section className="text-sm text-gray-700 md:w-48 whitespace-nowrap ">
         <NavLink
           to={link}
           className={(navData) => {
-            // if (navData.isActive) setTimeout(() => setCurrent(step));
+            if (navData.isActive) setTimeout(() => setCurrent(step));
             return "";
           }}
         >

@@ -9,7 +9,7 @@ const SubmitButton = ({ isActive, label }: { isActive: boolean, label: string })
   });
   
   return (
-    <div className="col-span-2 mt-6">
+    <div className="md:col-span-2  mb-4">
       <button className={style}>{label}</button>
     </div>
   );

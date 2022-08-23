@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./components/auth/Login";
+import LoginPage from "./pages/LoginPage";
 import RoleButtons from "./components/auth/RoleButtons";
 import LanguageChoice from "./components/LanguageChoice";
 import SideNav from "./components/layout/SideNav";
@@ -30,7 +30,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/signup/*" element={<SignUpPage />}>
               <Route path="*" element={<BasicInfoPage />} />
               <Route path="basic_info" element={<BasicInfoPage />} />
