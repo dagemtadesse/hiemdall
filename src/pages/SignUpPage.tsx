@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import SignUpProgress from "../components/ui/SignUpProgress";
+import FormContextProvider from "../store/FormContext";
 
 const SignUpPage = () => {
   return (
@@ -21,7 +22,9 @@ const SignUpPage = () => {
 
         <div className="flex flex-col-reverse md:flex-row md:items-start">
           {/* forms */}
-          <Outlet />
+          <FormContextProvider>
+            <Outlet />
+          </FormContextProvider>
           {/* progress */}
           <SignUpProgress />
         </div>

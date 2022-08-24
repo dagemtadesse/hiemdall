@@ -1,33 +1,61 @@
-import React from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
-import Input from "../components/ui/Inputs";
+import { FormContext } from "../store/FormContext";
+
 
 const BasicInfoPage = () => {
+  const ctx = useContext(FormContext);
+  
+  useEffect(() => {
+    ctx.addFields(['name', 'phone', 'email', 'sex', 'birthDate'])
+  }, [])
+
+  const formIsValid = !(ctx.invalidFields.size)
+
   return (
     <form className="grid md:grid-cols-2 grow gap-x-4 gap-y-4">
-      <Input label="Full Name" id="name" type="text" required={true} />
-      <Input
-        label="Nationality"
-        id="nationality_input"
+      <SignUpInput
+        label="Full Name"
+        field="name"
         type="text"
         required={true}
-      />
-      <Input
-        label="Telephone"
-        id="telephone_input"
-        type="phone"
-        required={true}
-      />
-      <Input label="Email" id="email_input" type="email" required={true} />
-      <Input
-        label="Date of Birth"
-        className="md:col-span-2"
-        id="email_input"
-        type="email"
-        required={true}
+        validator={(value) => value}
       />
 
-      <SubmitButton isActive={false} label="Next" />
+      <SignUpInput
+        label="Telephone"
+        field="phone"
+        type="phone"
+        required={true}
+        validator={(value) => value}
+      />
+
+      <SignUpInput
+        label="Email"
+        field="email"
+        type="email"
+        required={false}
+        validator={(value) => value}
+      />
+
+      <SignUpInput
+        label="Sex"
+        field="sex"
+        type="email"
+        required={true}
+        validator={(value) => value}
+      />
+
+      <SignUpInput
+        label="Date of Birth"
+        field="birthDate"
+        type="date"
+        required={true}
+        validator={(value) => value}
+      />
+
+      <SubmitButton isActive={formIsValid} label="Next" />
     </form>
   );
 };

@@ -5,7 +5,6 @@ const useValidated = (blured: boolean, validator: (val: string) => string | unde
     const [value, setValue] = useState<string>('')
 
     const validatorFn = (value: string) => {
-        console.log('called')
         setError(validator(value))
     }
 
