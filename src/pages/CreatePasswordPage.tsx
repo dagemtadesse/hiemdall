@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
-import Input from "../components/ui/Inputs";
+import { FormContext } from "../store/FormContext";
+import { confirmPasswordValidator, passwordValidator } from "../validators";
 
 export default function CreatePasswordPage() {
+  const form = useContext(FormContext);
+
+  useEffect(() => {
+    form.addFields(['password', 'confirmPassword'])
+  }, [])
+
   return (
     <form className="grow gap-x-4 gap-y-6">
-      <Input
+      <SignUpInput
         label="Password"
-        id="telephone_input"
-        type="phone"
+        field="password"
+        type="password"
         required={true}
         className="max-w-sm"
+        validator={passwordValidator}
       />
-      <Input
+      <SignUpInput
         className="mt-6 max-w-sm"
         label="Confirm Password"
-        id="telephone_input"
-        type="phone"
+        field="confirmPassword"
+        type="password"
         required={true}
+        validator={confirmPasswordValidator.bind(null, form.data.password)}
       />
-      <SubmitButton isActive={false} label="Next" />
+      <SubmitButton isActive={!(form.invalidFields.size)} label="Next" dest="" />
     </form>
   );
 }

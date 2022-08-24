@@ -10,6 +10,7 @@ type InputParam = {
   className?: string;
   validator: (val: string) => string | undefined;
   field: string;
+  options?: string[];
 };
 
 const SignUpInput = ({
@@ -19,6 +20,7 @@ const SignUpInput = ({
   type,
   validator,
   field,
+  options,
 }: InputParam) => {
   const ref = useRef<HTMLInputElement>(null);
   const ctx = useContext(FormContext);
@@ -43,23 +45,43 @@ const SignUpInput = ({
     }
   }, [isBlurred]);
 
+  useEffect(() => {
+    if (type === "select") {
+      ctx.addData(field, options!.at(0));
+    }
+  }, []);
+
   return (
     <div className={className || ""}>
       <label htmlFor={field} className="block text-gray-700 text-sm">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
 
-      <input
-        type={type}
-        id={field}
-        ref={ref}
-        className={inputStyle}
-        onBlur={() => setIsBlurred(true)}
-        onFocus={() => setIsBlurred(false)}
-      />
+      {type === "select" ? (
+        <select
+          id={field}
+          className={inputStyle}
+          onChange={(e) => ctx.addData(field, e.target.value)}
+        >
+          {options!.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          id={field}
+          ref={ref}
+          className={inputStyle}
+          onBlur={() => setIsBlurred(true)}
+          onFocus={() => setIsBlurred(false)}
+        />
+      )}
 
       {error && (
-        <p className="text-red-600 text-sm py-1 px-3 flex gap-3">
+        <p className="text-red-600 text-xs py-1 px-3 flex gap-3">
           <WarningIcon /> {error}
         </p>
       )}

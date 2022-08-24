@@ -1,42 +1,63 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
-import Input from "../components/ui/Inputs";
+import { FormContext } from "../store/FormContext";
+import notEmptyValidator from "../validators";
 
 export default function AddressPage() {
+  const form = useContext(FormContext);
+
+  useEffect(() => {
+    form.addFields(['zone', 'wereda', 'kebele', 'houseNo'])
+  }, [])
+
   return (
     <form className="grid grid-cols-2 grow gap-x-4 gap-y-6">
-      <Input
+      <SignUpInput
         label="Nationality"
-        id="nationality_input"
-        type="text"
+        field="nationality"
+        type="select"
         required={true}
+        options={["Ethiopian"]}
+        validator={(value) => value}
       />
-      <Input label="Region" id="region" type="text" required={true} />
-      <Input
+      <SignUpInput
+        label="Region"
+        field="region"
+        type="select"
+        required={true}
+        options={["Amhara", "Oromiya", "Afar", "Tigray"]}
+        validator={(value) => value}
+      />
+      <SignUpInput
         label="Zone/Sub-city"
-        id="nationality_input"
+        field="zone"
         type="text"
         required={true}
+        validator={notEmptyValidator('zone/sub-city')}
       />
-      <Input
+      <SignUpInput
         label="Wereda"
-        id="nationality_input"
+        field="wereda"
         type="text"
         required={true}
+        validator={notEmptyValidator('Wereda')}
       />
-      <Input
+      <SignUpInput
         label="Kebele"
-        id="nationality_input"
+        field="kebele"
         type="text"
         required={true}
+        validator={notEmptyValidator('kebele')}
       />
-      <Input
+      <SignUpInput
         label="House No."
-        id="nationality_input"
+        field="houseNo"
         type="text"
         required={true}
+        validator={notEmptyValidator('House no.')}
       />
-      <SubmitButton isActive={false} label="Next" />
+      <SubmitButton isActive={!(form.invalidFields.size)} label="Next" dest="/signup/edu_background"/>
     </form>
   );
 }

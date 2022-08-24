@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
+import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
-import Input from "../components/ui/Inputs";
+import { FormContext } from "../store/FormContext";
 
 export default function EducationalBackgroundPage() {
+  const form = useContext(FormContext);
+  
   return (
     <form className="grid grid-cols-2 grow gap-x-4 gap-y-6">
-      <Input
+      <SignUpInput
         label="TVET Departments/Programs"
-        id="nationality_input"
-        type="text"
+        field="nationality_input"
+        type="select"
+        options={[]}
         required={true}
+        validator={value => value}
       />
-      <SubmitButton isActive={false} label="Next" />
+      <SubmitButton isActive={!(form.invalidFields.size)} label="Next" dest="/signup/password"/>
     </form>
   );
 }

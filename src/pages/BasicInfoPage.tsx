@@ -2,16 +2,17 @@ import React, { useContext, useEffect, useReducer, useState } from "react";
 import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
 import { FormContext } from "../store/FormContext";
+import { DOBValidator, emailValidator, fullNameValidator, phoneValidator } from "../validators";
 
 
 const BasicInfoPage = () => {
   const ctx = useContext(FormContext);
   
   useEffect(() => {
-    ctx.addFields(['name', 'phone', 'email', 'sex', 'birthDate'])
+    ctx.addFields(['name', 'phone', 'email',  'birthDate'])
   }, [])
 
-  const formIsValid = !(ctx.invalidFields.size)
+  const formIsValid = !(ctx.invalidFields.size);
 
   return (
     <form className="grid md:grid-cols-2 grow gap-x-4 gap-y-4">
@@ -20,7 +21,7 @@ const BasicInfoPage = () => {
         field="name"
         type="text"
         required={true}
-        validator={(value) => value}
+        validator={fullNameValidator}
       />
 
       <SignUpInput
@@ -28,7 +29,7 @@ const BasicInfoPage = () => {
         field="phone"
         type="phone"
         required={true}
-        validator={(value) => value}
+        validator={phoneValidator}
       />
 
       <SignUpInput
@@ -36,13 +37,14 @@ const BasicInfoPage = () => {
         field="email"
         type="email"
         required={false}
-        validator={(value) => value}
+        validator={emailValidator}
       />
 
       <SignUpInput
         label="Sex"
         field="sex"
-        type="email"
+        type="select"
+        options={["Male", "Female"]}
         required={true}
         validator={(value) => value}
       />
@@ -52,10 +54,10 @@ const BasicInfoPage = () => {
         field="birthDate"
         type="date"
         required={true}
-        validator={(value) => value}
+        validator={DOBValidator}
       />
 
-      <SubmitButton isActive={formIsValid} label="Next" />
+      <SubmitButton isActive={formIsValid} label="Next" dest="/signup/address"/>
     </form>
   );
 };
