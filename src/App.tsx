@@ -12,9 +12,11 @@ import ProfilePage from "./pages/Profile";
 import SignUpPage from "./pages/SignUpPage";
 import StudentListPage from "./pages/StudentList";
 import { UserContext } from "./store/UserContext";
+import { FormContext } from "./store/FormContext";
 
 function App() {
   const userCtx = useContext(UserContext);
+  const formCtx = useContext(FormContext);
 
   return (
     <div className="font-body flex flex-col md:grid md:grid-cols-4 w-screen min-h-screen relative">
@@ -32,20 +34,35 @@ function App() {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup/*" element={<SignUpPage />}>
-              <Route path="*" element={<BasicInfoPage />} />
+              <Route path="*" element={<Navigate to="basic_info" />} />
+
               <Route path="basic_info" element={<BasicInfoPage />} />
-              <Route path="address" element={<AddressPage />} />
-              <Route
-                path="edu_background"
-                element={<EducationalBackgroundPage />}
-              />
-              <Route path="password" element={<CreatePasswordPage />} />
+
+              {formCtx.formCheckPoint > 2 && (
+                <Route path="address" element={<AddressPage />} />
+              )}
+              {formCtx.formCheckPoint > 3 && (
+                <Route
+                  path="edu_background"
+                  element={<EducationalBackgroundPage />}
+                />
+              )}
+              {formCtx.formCheckPoint > 4 && (
+                <Route path="password" element={<CreatePasswordPage />} />
+              )}
             </Route>
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/student-list" element={<StudentListPage />} />
+
+            {userCtx.loggedInUser && (
+              <Route path="/profile" element={<ProfilePage />} />
+            )}
+
+            {userCtx.loggedInUser && userCtx.loggedInUser.role === "admin" && (
+              <Route path="/student-list" element={<StudentListPage />} />
+            )}
+
+            <Route path="*" element={<Navigate to="/" />}/>
           </Routes>
         </main>
- 
       </div>
     </div>
   );

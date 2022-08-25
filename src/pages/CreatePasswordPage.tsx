@@ -11,8 +11,10 @@ export default function CreatePasswordPage() {
     form.addFields(['password', 'confirmPassword'])
   }, [])
 
+  console.log(form.invalidFields.size)
+
   return (
-    <form className="grow gap-x-4 gap-y-6">
+    <form className="grow gap-x-4 gap-y-6" onSubmit={e => e.preventDefault()}>
       <SignUpInput
         label="Password"
         field="password"
@@ -29,7 +31,8 @@ export default function CreatePasswordPage() {
         required={true}
         validator={confirmPasswordValidator.bind(null, form.data.password)}
       />
-      <SubmitButton isActive={!(form.invalidFields.size)} label="Next" dest="" />
+      
+      <SubmitButton isActive={!form.invalidFields.size} label="Next"  />
     </form>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export const UserContext = React.createContext({
   role: "student",
-  loggedInUser: null,
+  loggedInUser: {} as any ,
   setRole: (role: string) => {},
   login: () => {},
 });

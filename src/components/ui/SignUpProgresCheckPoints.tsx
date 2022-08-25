@@ -8,7 +8,7 @@ type ProgressItem = {
   step: number;
   link: string;
   current: number;
-  setCurrent: any;
+  max: number;
 };
 
 const SignUpProgressCheckPoint = ({
@@ -16,26 +16,25 @@ const SignUpProgressCheckPoint = ({
   label,
   step,
   current,
-  setCurrent,
+  max,
 }: ProgressItem) => {
+
   const indexStyle = classNames({
     "flex border justify-center z-10 bg-white items-center self-center rounded-full w-7 h-7 mr-6 ml-4": true,
     "bg-primaryOrange border-primaryOrange text-white": step === current,
     "text-gray-700": step > current,
   });
 
+  const linkStyle = classNames({
+    'text-sm md:w-48 whitespace-nowrap': true,
+    'text-gray-700': step <= max,
+    'text-gray-400': step > max
+  })
+
   return (
     <div className="flex flex-col-reverse items-start md:flex-row-reverse py-2 md:items-center gap-y-2">
-      <section className="text-sm text-gray-700 md:w-48 whitespace-nowrap ">
-        <NavLink
-          to={link}
-          className={(navData) => {
-            if (navData.isActive) setTimeout(() => setCurrent(step));
-            return "";
-          }}
-        >
-          {label}
-        </NavLink>
+      <section className={linkStyle}>
+        <NavLink to={step <= max ? link : "#"}>{label}</NavLink>
       </section>
       <div className={indexStyle}>
         <span className="text-sm">{step < current ? <CheckIcon /> : step}</span>

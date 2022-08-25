@@ -46,10 +46,15 @@ const SignUpInput = ({
   }, [isBlurred]);
 
   useEffect(() => {
-    if (type === "select") {
+    if (type === "select" && !ctx.data[field]) {
       ctx.addData(field, options!.at(0));
     }
   }, []);
+
+  const changeHandler = (e: any) => {
+    ctx.addData(field, e.target.value)
+    ctx.validateField(field, !validator(e.target.value))
+  }
 
   return (
     <div className={className || ""}>
@@ -61,6 +66,7 @@ const SignUpInput = ({
         <select
           id={field}
           className={inputStyle}
+          value={ctx.data[field] || ""}
           onChange={(e) => ctx.addData(field, e.target.value)}
         >
           {options!.map((option, index) => (
@@ -74,7 +80,9 @@ const SignUpInput = ({
           type={type}
           id={field}
           ref={ref}
+          value={ctx.data[field] || ""}
           className={inputStyle}
+          onChange={changeHandler}
           onBlur={() => setIsBlurred(true)}
           onFocus={() => setIsBlurred(false)}
         />

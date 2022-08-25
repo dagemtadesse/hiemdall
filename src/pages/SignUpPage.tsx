@@ -22,9 +22,7 @@ const SignUpPage = () => {
 
         <div className="flex flex-col-reverse md:flex-row md:items-start">
           {/* forms */}
-          <FormContextProvider>
-            <Outlet />
-          </FormContextProvider>
+          <Outlet />
           {/* progress */}
           <SignUpProgress />
         </div>

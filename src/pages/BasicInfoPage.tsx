@@ -2,20 +2,24 @@ import React, { useContext, useEffect, useReducer, useState } from "react";
 import SignUpInput from "../components/auth/SignUpInputs";
 import SubmitButton from "../components/auth/SubmitButton";
 import { FormContext } from "../store/FormContext";
-import { DOBValidator, emailValidator, fullNameValidator, phoneValidator } from "../validators";
-
+import {
+  DOBValidator,
+  emailValidator,
+  fullNameValidator,
+  phoneValidator,
+} from "../validators";
 
 const BasicInfoPage = () => {
   const ctx = useContext(FormContext);
-  
-  useEffect(() => {
-    ctx.addFields(['name', 'phone', 'email',  'birthDate'])
-  }, [])
 
-  const formIsValid = !(ctx.invalidFields.size);
+  useEffect(() => {
+    ctx.addFields(["name", "phone", "birthDate"]);
+  }, []);
+
+  const formIsValid = !ctx.invalidFields.size;
 
   return (
-    <form className="grid md:grid-cols-2 grow gap-x-4 gap-y-4">
+    <form className="grid md:grid-cols-2 grow gap-x-4 gap-y-4" onSubmit={e => e.preventDefault()}>
       <SignUpInput
         label="Full Name"
         field="name"
@@ -57,7 +61,11 @@ const BasicInfoPage = () => {
         validator={DOBValidator}
       />
 
-      <SubmitButton isActive={formIsValid} label="Next" dest="/signup/address"/>
+      <SubmitButton
+        isActive={formIsValid}
+        label="Next"
+        dest="/signup/address"
+      />
     </form>
   );
 };
