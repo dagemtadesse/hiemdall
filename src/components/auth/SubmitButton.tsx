@@ -7,10 +7,12 @@ const SubmitButton = ({
   isActive,
   label,
   dest,
+  submitHandler,
 }: {
   isActive: boolean;
   label: string;
   dest?: string;
+  submitHandler?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }) => {
   const navigate = useNavigate();
   const form = useContext(FormContext);
@@ -21,16 +23,19 @@ const SubmitButton = ({
     "bg-gray-200 text-gray-700": !isActive,
   });
 
-  const clickHandler = () => {
+  const clickHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isActive && dest) {
-      navigate(dest);
       form.nextForm();
+      navigate(dest);
     }
   };
 
   return (
     <div className="md:col-span-2  mb-4 flex justify-end">
-      <button onClick={clickHandler} className={style}>
+      <button
+        onClick={dest ? clickHandler :  submitHandler}
+        className={style}
+      >
         {label}
       </button>
     </div>

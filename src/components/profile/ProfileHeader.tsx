@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import doug from "../../assets/avatar.jpg";
+import { UserContext } from "../../store/UserContext";
 import ProfileNavigation from "./ProfileNavigation";
 
 type ProfileHeaderProps = {
@@ -13,6 +14,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   role,
   active,
 }) => {
+
+  const userCtx = useContext(UserContext);
   return (
     <>
       <div className="w-full h-[150px] bg-darkBrown ">
@@ -22,9 +25,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               Change Photo
             </button>
 
-            <ProfileNavigation />
+            {userCtx.loggedInUser.role === "admin" && <ProfileNavigation />}
           </div>
-        {/* )} */}
       </div>
 
       <div className="max-w-4xl mx-auto px-2">

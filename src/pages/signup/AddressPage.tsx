@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import SignUpInput from "../components/auth/SignUpInputs";
-import SubmitButton from "../components/auth/SubmitButton";
-import { FormContext } from "../store/FormContext";
-import notEmptyValidator from "../validators";
+import SignUpInput from "../../components/auth/SignUpInputs";
+import SubmitButton from "../../components/auth/SubmitButton";
+import { FormContext } from "../../store/FormContext";
+import notEmptyValidator from "../../validators";
 
 export default function AddressPage() {
   const form = useContext(FormContext);

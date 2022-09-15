@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import NotificationPopup from "../components/ui/Notification";
 import SignUpProgress from "../components/ui/SignUpProgress";
 import FormContextProvider from "../store/FormContext";
 

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import SignUpInput from "../components/auth/SignUpInputs";
-import SubmitButton from "../components/auth/SubmitButton";
-import { FormContext } from "../store/FormContext";
+import SignUpInput from "../../components/auth/SignUpInputs";
+import SubmitButton from "../../components/auth/SubmitButton";
+import { FormContext } from "../../store/FormContext";
 
 export default function EducationalBackgroundPage() {
   const form = useContext(FormContext);

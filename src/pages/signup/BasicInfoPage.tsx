@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import SignUpInput from "../components/auth/SignUpInputs";
-import SubmitButton from "../components/auth/SubmitButton";
-import { FormContext } from "../store/FormContext";
+import SignUpInput from "../../components/auth/SignUpInputs";
+import SubmitButton from "../../components/auth/SubmitButton";
+import { FormContext } from "../../store/FormContext";
 import {
   DOBValidator,
   emailValidator,
   fullNameValidator,
   phoneValidator,
-} from "../validators";
+} from "../../validators";
 
 const BasicInfoPage = () => {
   const ctx = useContext(FormContext);
