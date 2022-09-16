@@ -5,22 +5,26 @@ import NotificationContext from "../../store/NotificationContext";
 
 const NotificationPopup = () => {
   const notificationCtx = useContext(NotificationContext);
+  const { notificaton } = notificationCtx;
 
   useEffect(() => {
-    setTimeout(() => notificationCtx.removeNotification(), 5000);
-    // return () => clearTimeout(timer);
-  }, [notificationCtx.notificaton]);
+    const timer = setTimeout(() => notificationCtx.removeNotification(), 5000);
+    return () => clearTimeout(timer);
+  }, [notificaton]);
 
   const notificationStyle = classNames({
-    "absolute bottom-4 left-4 bg-darkBrown py-2 px-3 z-50 rouded rounded-md min-w-[25%] gap-4 text-sm": true,
+    "fixed bottom-4 left-4 py-2 px-3 z-50 rouded rounded-md min-w-[25%] gap-4 text-sm": true,
     "text-white shadow-md flex justify-between items-center transition-all duration-300 ease-in-out": true,
-    'opacity-1': notificationCtx.notificaton,
-    'opacity-0': !notificationCtx.notificaton,
+    "opacity-1": notificaton,
+    "opacity-0": !notificaton,
+    "bg-darkBrown": notificaton && notificaton.type === "error",
+    "bg-green-700": notificaton && notificaton.type === "success",
+    "bg-red-700": notificaton && notificaton.type === "failure",
   });
 
   return (
     <div className={notificationStyle}>
-      {notificationCtx.notificaton}
+      {notificaton && notificaton.msg}
       <button onClick={notificationCtx.removeNotification}>
         <CloseIcon />
       </button>

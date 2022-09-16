@@ -5,7 +5,7 @@ const token = "token";
 
 export const UserContext = React.createContext({
   role: "student",
-  loggedInUser: {} as any,
+  loggedInUser: { role: "student" } as any,
   setRole: (role: string) => {},
   login: async (
     emailOrPhone: string,
@@ -21,10 +21,10 @@ export const UserContext = React.createContext({
 
 const UserContextProvider = ({ children }: any) => {
   const [role, setRole] = useState("Student");
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState<any | undefined>({ role: "student" });
 
   const handleLogin = async (emailOrPhone: string, password: string) => {
-    const loginURL = ""; //"https://jsonplaceholder.typicode.com/users";
+    const loginURL = "https://jsonplaceholder.typicode.com/users";
 
     const body = JSON.stringify({
       email: isEmail(emailOrPhone) ? emailOrPhone : undefined,

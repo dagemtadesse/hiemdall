@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 
 const RequestIndicator = () => {
   return (
@@ -19,6 +20,13 @@ const RequestIndicator = () => {
         />
       </svg>
     </div>
+  );
+};
+
+export const ProgressIndicator = () => {
+  return ReactDOM.createPortal(
+    <RequestIndicator />,
+    document.getElementById("overlay")!
   );
 };
 

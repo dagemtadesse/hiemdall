@@ -1,19 +1,24 @@
 import React, { createContext, useState } from "react";
 
+export type notificaton = {
+  msg: string | null,
+  type:  "error" | "success" | "failure";
+}
+
 const NotificationContext = createContext({
-  notificaton: {} as any,
-  setNotification: (msg: string) => {},
+  notificaton: null as notificaton | null,
+  setNotification: (msg: string, type?: any) => {},
   removeNotification: () => {},
 });
 
 export const NotificationProvider = ({ children }: any) => {
-  const [notificaton, setNotification] = useState<string | null>(null);
+  const [notificaton, setNotification] = useState<notificaton | null>(null);
 
   return (
     <NotificationContext.Provider
       value={{
         notificaton,
-        setNotification,
+        setNotification: (msg, type) => setNotification({ msg, type }),
         removeNotification: () => setNotification(null),
       }}
     >
