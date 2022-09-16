@@ -11,6 +11,7 @@ export interface IUserInterface {
   password: String
   photoURL: String
   isVerified: Boolean
+  deleted: Boolean
 }
 
 const userSchema: Schema<IUserInterface> = new mongoose.Schema(
@@ -39,12 +40,14 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
 
     phoneNumber: {
       type: String,
-      required: false
+      required: false,
+      unique: true
     },
 
     email: {
       type: String,
-      required: false
+      required: false,
+      unique: true
     },
 
     password: {
@@ -63,9 +66,18 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false
+    },
+    deleted: {
+      type: Boolean,
+      default: false
     }
   },
-  {}
+  {
+    timestamps: {
+      createdAt: 'dateCreated',
+      updatedAt: 'dateUpdated'
+    }
+  }
 )
 
 export const User = mongoose.model<IUserInterface>('User', userSchema)
