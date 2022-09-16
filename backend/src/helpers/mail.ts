@@ -22,7 +22,7 @@ export const sendMail = async (credentials: any) => {
                 </div>
                 <p style="font-size:1.1em">Hi, ${credentials.to}</p>
                 <h4>Please verify your email</h4>
-                <pUse the following Code to complete your Sign Up procedures.</p>
+                <p>Use the following Code to complete your Sign Up procedures.</p>
                 <h4 style="background: #00466a;margin: 0 auto;width: max-content;padding: 10px 30px;color: #fff;border-radius: 4px;">
                 ${credentials.OTP}
                 </h4>
@@ -49,8 +49,6 @@ export const sendMail = async (credentials: any) => {
                 <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Heimdall</a>
                 </div>
                 <p style="font-size:1.1em">Hi, ${credentials.to}</p>
-                <h4>Please verify your email</h4>
-                <p>Use the following Code to complete your Sign Up procedures.</p>
                 <p>Click the link below change your password</p>
                 <a href = "${credentials.link}" style="margin: 0 auto;width: max-content;padding: 10px 30px;color: blue; text-decoration: none;">
                 ${credentials.link}

@@ -36,11 +36,17 @@ export const signUpWithEmail = async (
     }
     return next()
   }
-
-  const newUser = await createUser(email, password, firstName, lastName)
-  res.locals.json = {
-    statusCode: 201,
-    data: newUser
+  try {
+    const newUser = await createUser(email, password, firstName, lastName)
+    res.locals.json = {
+      statusCode: 201,
+      data: newUser
+    }
+  } catch (error) {
+    res.locals.json = {
+      statusCode: 400,
+      message: error.message
+    }
   }
   return next()
 }
@@ -50,6 +56,7 @@ export const verifyEmail = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('verifying email')
   const { email, otp } = req.body
   const checkUser = await User.findOne({ email: email })
   if (!checkUser) {
@@ -166,7 +173,7 @@ const createUser = async (
     })
     return _.pick(newUser, ['email', 'firstName', 'lastName'])
   } catch (error) {
-    return false
+    return error
   }
 }
 

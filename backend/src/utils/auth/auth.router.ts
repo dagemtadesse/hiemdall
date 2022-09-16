@@ -25,7 +25,6 @@ authRouter.post(
   signinWithPhone,
   respond
 )
-// authRouter.post('/signin-with-phone', signinWithPhone, as,respond)
 authRouter.post('/signup-with-phone', signUpWithPhone, respond)
 authRouter.post(
   '/continue-with-google',

@@ -6,12 +6,6 @@ import { generateToken } from '../../helpers/generateToken'
 import { v4 as uuidv4 } from 'uuid'
 import { userInfo } from 'os'
 import _, { range, toInteger } from 'lodash'
-
-import { getMaterialsByUserId } from '../material/material.controllers'
-import { getUpvoteCountByMaterialId } from '../upvote/upvoteControllers'
-import { Material } from '../material/material.model'
-import materialRouter from '../material/material.router'
-import { Upvote } from '../upvote/upvote.model'
 import { uploadImage } from '../../helpers/uploadImage'
 export const fetchAllUsers = async (
   req: Request,
@@ -49,15 +43,10 @@ export const fetchUserById = async (
       '_id',
       'email',
       'firstName',
-      'middleName',
       'lastName',
       'phoneNumber',
-      'bio',
       'birthDate',
-      'photoURL',
-      'educationPlace',
-      'educationFieldOfStudy',
-      'year'
+      'photoURL'
     ])
   }
   return next()
@@ -166,158 +155,6 @@ export const deleteAll = async (
     res.locals.json = {
       statusCode: 400,
       message: 'Cannot delete all accounts'
-    }
-    return next()
-  }
-}
-
-export const topContributors = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const users = await User.find({}).sort({ contributions: -1 })
-
-    const materials = []
-
-    for (let index = 0; index < 10; index++) {
-      let m = await getMaterialsByUserId(users[index]._id)
-      materials.push(m)
-    }
-
-    const upVotes = []
-    for (let i = 0; i < materials.length; i++) {
-      let upvote = 0
-      for (let index = 0; index < materials[i].length; index++) {
-        upvote += await getUpvoteCountByMaterialId(materials[i][index]._id)
-      }
-      upVotes.push(upvote)
-    }
-    const Users = []
-    for (let index = 0; index < 10; index++) {
-      let userObj = {
-        firstName: users[index].firstName,
-        lastName: users[index].lastName,
-        middleName: users[index].middleName,
-        email: users[index].email,
-        contributions: users[index].contributions,
-        photoURL: users[index].photoURL,
-        upVotes: upVotes[index]
-      }
-
-      Users.push(userObj)
-    }
-
-    res.locals.json = {
-      statusCode: 200,
-      data: Users
-    }
-
-    return next()
-  } catch (e) {
-    res.locals.json = {
-      statusCode: 400,
-      message: 'Cannot retrieve users'
-    }
-    return next()
-  }
-}
-export const myFavorites = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    let limit = toInteger(req.query.limit) || 10
-    let skip = toInteger(req.query.skip) || 1
-    const { _id } = res.locals
-
-    const temp = await User.find({ _id: _id }).select('upVotes')
-    const estimate = Object.keys(temp[0].upVotes).length
-    const user = await User.find({ _id: _id })
-      .select('upVotes')
-      .populate([
-        {
-          path: 'upVotes',
-          select: ' -__v',
-          options: {
-            limit: limit,
-            skip: (skip - 1) * limit
-          },
-          model: Upvote,
-          populate: {
-            path: 'materialId',
-            select: ' -__v',
-            populate: [
-              {
-                path: 'typeId',
-                select: ' -__v'
-              },
-              {
-                path: 'user',
-                select: 'firstName lastName'
-              }
-            ]
-          }
-        }
-      ])
-
-    res.locals.json = {
-      statusCode: 200,
-      data: user,
-      hasNext: Math.ceil(estimate / limit) >= skip + 1
-    }
-    return next()
-  } catch (err) {
-    console.log(err)
-    res.locals.json = {
-      statusCode: 400,
-      data: "problem occured fetching user's favorites"
-    }
-    return next()
-  }
-}
-
-export const myMaterials = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const id = req.params.id
-    let limit = toInteger(req.query.limit) || 10
-    let skip = toInteger(req.query.skip) || 1
-    let type: string
-    if (req.query.type) type = req.query.type.toString()
-
-    const estimate: number = await Material.find({
-      user: id,
-      type: type || { $ne: null }
-    }).count()
-
-    const uploaded = await Material.find({
-      user: id,
-      type: type || { $ne: null }
-    })
-      .populate({ path: 'typeId' })
-      .skip((skip - 1) * limit)
-      .limit(limit)
-      .select('-user -__v')
-
-    res.locals.json = {
-      statusCode: 200,
-      data: {
-        materials: uploaded,
-        hasNext: Math.ceil(estimate / limit) >= skip + 1
-      }
-    }
-    return next()
-  } catch (error) {
-    console.log(error)
-    res.locals.json = {
-      statusCode: 400,
-      data: "problem occured fetching user's materials"
     }
     return next()
   }
