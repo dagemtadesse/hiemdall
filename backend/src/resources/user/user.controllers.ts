@@ -7,12 +7,26 @@ import { v4 as uuidv4 } from 'uuid'
 import { userInfo } from 'os'
 import _, { range, toInteger } from 'lodash'
 import { uploadImage } from '../../helpers/uploadImage'
+import { grant_access } from '../../middlewares/access'
+
+const selectionDict = {
+  student: '-__v -password -role -deleted -isVerified',
+  admin: '-__v -password -deleted -isVerified',
+  superadmin: '-__v -password -deleted -isVerified'
+}
+
+const roleDict = {
+  student: 1,
+  admin: 2,
+  superadmin: 3
+}
+
 export const fetchAllUsers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const users = await User.find({})
+  const users = await User.find({}).select('-__v -password -role')
   res.locals.json = {
     statusCode: 200,
     data: users
@@ -80,6 +94,8 @@ export const updateUser = async (
   try {
     const { _id } = res.locals
 
+    const { firstName, lastName, set, nationality, file } = req.body
+
     if (req.body.email || req.body.password || req.body.phoneNumber) {
       res.locals.json = {
         statusCode: 403,
@@ -88,17 +104,17 @@ export const updateUser = async (
       return next()
     }
     let user = await User.findByIdAndUpdate(_id, {
-      $set: req.body
+      $set: { firstName, lastName, set, nationality }
     })
-    if (req.file) {
-      const result = await uploadImage(req.file)
+    if (file) {
+      const result = await uploadImage(file)
       if (result) {
         user.photoURL = result.data.secure_url
       }
     }
     await user.save()
 
-    const updatedUser = await User.findById(_id).select('-__v -password')
+    const updatedUser = await User.findById(_id).select('-__v -password -role')
 
     res.locals.json = {
       statusCode: 200,
@@ -114,48 +130,79 @@ export const updateUser = async (
   }
 }
 
-export const deleteUser = async (
+export const promote = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = res.locals
+    const { id } = req.params
+    let user = await User.findByIdAndUpdate(id, {
+      $set: { role: 'admin' }
+    })
+    await user.save()
+
+    const updatedUser = await User.findById(id).select('-__v -password -role')
+
+    res.locals.json = {
+      statusCode: 200,
+      data: updatedUser
+    }
+    return next()
+  } catch (error) {
+    res.locals.json = {
+      statusCode: 500,
+      message: error.message
+    }
+    return next()
+  }
+}
+
+export const removeUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { email } = req.params
-  const user = await User.deleteOne({ email })
+  const { _id } = res.locals
+  const { id } = req.params
+  try {
+    let user = await User.findByIdAndUpdate(id, {
+      $set: { deleted: true }
+    })
+    await user.save()
+
+    const otp = await OTP.deleteOne({ _id: id })
+    res.locals.json = {
+      statusCode: 200,
+      message: 'Account successfully deleted'
+    }
+    return next()
+  } catch (error) {
+    res.locals.json = {
+      statusCode: 500,
+      message: error.message
+    }
+    return next()
+  }
+  return next()
+}
+
+export const deleteAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { _id } = res.locals
+  const user = await User.deleteOne({ _id: _id })
   if (!user) {
     res.locals.json = {
       statusCode: 400,
-      message: 'Cannot remove account'
+      message: 'Cannot Delete account'
     }
     return next()
   }
 
-  const otp = await OTP.deleteOne({ email })
+  const otp = await OTP.deleteOne({ _id: _id })
   res.locals.json = {
     statusCode: 200,
     message: 'Account successfully deleted'
   }
   return next()
-}
-
-export const deleteAll = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    await User.deleteMany({})
-    await OTP.deleteMany({})
-    console.log('del')
-    res.locals.json = {
-      statusCode: 200,
-      message: 'All accounts deleted'
-    }
-    return next()
-  } catch (error) {
-    res.locals.json = {
-      statusCode: 400,
-      message: 'Cannot delete all accounts'
-    }
-    return next()
-  }
 }

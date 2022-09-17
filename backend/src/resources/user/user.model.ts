@@ -8,10 +8,14 @@ export interface IUserInterface {
   birthDate: Date
   phoneNumber: String
   email: String
+  program: String
+  level: Number
+  graduationYear: Date
   password: String
   photoURL: String
   isVerified: Boolean
   deleted: Boolean
+  role: String
 }
 
 const userSchema: Schema<IUserInterface> = new mongoose.Schema(
@@ -31,11 +35,43 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
     },
     nationality: {
       type: String,
+      enum: [
+        'Ethiopian',
+        'Kenyan',
+        'Sudanese',
+        'South Sudanese',
+        'Eritrean',
+        'Somailan'
+      ],
       default: 'Ethiopian'
     },
     birthDate: {
       type: Date,
       required: false
+    },
+
+    program: {
+      type: String,
+      enum: [
+        'Ethiopian',
+        'Kenyan',
+        'Sudanese',
+        'South Sudanese',
+        'Eritrean',
+        'Somailan',
+        'Finished'
+      ],
+      required: true
+    },
+    level: {
+      type: Number,
+      enum: [1, 2, 3, 4, 5, 0],
+      default: 1,
+      required: true
+    },
+    graduationYear: {
+      type: Date,
+      required: true
     },
 
     phoneNumber: {
@@ -70,6 +106,11 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
     deleted: {
       type: Boolean,
       default: false
+    },
+    role: {
+      type: String,
+      enum: ['student', 'admin', 'superadmin'],
+      default: 'student'
     }
   },
   {

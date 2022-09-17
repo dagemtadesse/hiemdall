@@ -5,10 +5,10 @@ export const checkRequest = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.body.email && !req.body.phoneNumber) {
+  if (!req.body.email && !req.body.phoneNumber && !req.body.id) {
     return res.status(400).json({
       statusCode: 400,
-      message: 'phone or email are required'
+      message: 'Input either phone, email, or id to login'
     })
   }
   return next()

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import { User } from '../resources/user/user.model'
 
 export const verifyToken = (
   req: Request,
@@ -17,6 +18,7 @@ export const verifyToken = (
 
   try {
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    const user = User.findOne({ _id: JSON.parse(JSON.stringify(payload)) })
     res.locals = JSON.parse(JSON.stringify(payload))
     return next()
   } catch (error) {
