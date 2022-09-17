@@ -61,17 +61,17 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
         'Somailan',
         'Finished'
       ],
-      required: true
+      required: false
     },
     level: {
       type: Number,
       enum: [1, 2, 3, 4, 5, 0],
       default: 1,
-      required: true
+      required: false
     },
     graduationYear: {
       type: Date,
-      required: true
+      required: false
     },
 
     phoneNumber: {

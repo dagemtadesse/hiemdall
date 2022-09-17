@@ -206,3 +206,59 @@ export const deleteAccount = async (
   }
   return next()
 }
+
+export const updateAcademicStatus = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { _id } = res.locals
+    let user = await User.findByIdAndUpdate(_id, {
+      level: { $inc: 1 }
+    })
+    await user.save()
+
+    const updatedUser = await User.findById(_id).select('-__v -password -role')
+
+    res.locals.json = {
+      statusCode: 200,
+      data: updatedUser
+    }
+    return next()
+  } catch (error) {
+    res.locals.json = {
+      statusCode: 500,
+      message: error.message
+    }
+    return next()
+  }
+}
+
+export const isAdmin = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { _id } = res.locals
+    const { id } = req.params
+
+    const user = await User.findById(id)
+    if (!user) {
+      res.locals.json = {
+        statusCode: 500,
+        message: "User doesn't exist"
+      }
+      return next()
+    }
+
+    res.locals.json = {
+      statusCode: 200,
+      data: user.role == 'admin' || user.role == 'superadmin' ? true : false
+    }
+    return next()
+  } catch (error) {
+    res.locals.json = {
+      statusCode: 500,
+      message: error.message
+    }
+    return next()
+  }
+}

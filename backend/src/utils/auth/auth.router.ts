@@ -3,7 +3,6 @@ import { verifyEmail, resendCode, signUpWithEmail } from './signup'
 import { signinWithEmail } from './signin'
 import { signinWithPhone } from './signin'
 import { verifyGoogle } from '../../middlewares/continueWithGoogle'
-import { continueWithGoogle } from './continue-with-google'
 import { forgotPassword, forgotPasswordWithPhone } from './forgotPassword'
 import { resetPassword, resetPasswordWithPhone } from './resetPassword'
 import { respond } from '../../middlewares/respond'
@@ -26,13 +25,6 @@ authRouter.post(
   respond
 )
 authRouter.post('/signup-with-phone', signUpWithPhone, respond)
-authRouter.post(
-  '/continue-with-google',
-
-  verifyGoogle,
-  continueWithGoogle,
-  respond
-)
 authRouter.post(
   '/forgotPassword',
 
