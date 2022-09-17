@@ -1,6 +1,6 @@
 import validator from "validator";
 
-type ErrMsg = string | undefined;
+export type ErrMsg = string | undefined;
 
 export function emailValidator(val: string): ErrMsg {
     if (!validator.isEmpty(val) && !validator.isEmail(val)) {

@@ -10,7 +10,7 @@ const StudentListPage = () => {
 
   return (
     <StudentListContextProvider>
-      <ProfileHeader name="Douglas Bartholomew" role="admin" active={false} />
+      {/* <ProfileHeader name="Douglas Bartholomew" role="admin" active={false} /> */}
       <div className="max-w-4xl md:mx-auto mx-2">
         <StudentSearchFilter query={query} setQuery={setQuery} />
         <StudentList filter={query} />
