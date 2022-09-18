@@ -34,7 +34,7 @@ export default function CreatePasswordPage() {
       navigate("/profile");
       return;
     } // password1!
-    notificationCtx.setNotification(error); // console.log(userCtx.authError)
+    notificationCtx.setNotification(error, "error"); // console.log(userCtx.authError)
   };
 
   return (
