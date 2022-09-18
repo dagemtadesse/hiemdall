@@ -5,14 +5,6 @@ import StudentListContext from "../../store/StudentListContext";
 import { ProgressIndicator } from "../ui/RequestIndicator";
 import StudentItem from "./StudentItem";
 
-// const studentsList = [
-//   { name: "Abraham Abraraw Longtextfgrand", department: "Wood Work", level: 3 },
-//   { name: "Almaz Abraraw", department: "Wood Work", level: 3 },
-//   { name: "Dagem Abraraw", department: "Wood Work", level: 3 },
-//   { name: "Naomi Abraraw", department: "Wood Work", level: 3 },
-//   { name: "Henok Abraraw", department: "Wood Work", level: 3 },
-// ];
-
 const contains = (base: string, filter: string): boolean => {
   return base.toLowerCase().includes(filter);
 };
@@ -38,17 +30,9 @@ export default function StudentList({ filter }: { filter: string }) {
       <ul className="mt-6">
         {/* render the list */}
         {studentListCtx.students
-          .filter(
-            (item) =>
-              contains(item.firstName, lowerCaseFilter) ||
-              contains(item.lastName, lowerCaseFilter)
-          )
+          .filter((item) => contains(item.fullName, lowerCaseFilter))
           .map((student, index) => (
-            <StudentItem
-              key={index}
-              no={index + 1}
-              student={student}
-            />
+            <StudentItem key={student.id} no={index + 1} student={student} />
           ))}
         {/* if the list is empty of null */}
         {students && students.length === 0 && (

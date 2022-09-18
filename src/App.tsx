@@ -22,26 +22,21 @@ function App() {
   return (
     <>
       <NotificationPopup />
-
       <div className="font-body flex flex-col md:grid md:grid-cols-4 w-screen min-h-screen relative">
         <SideNav />
-
         <div className="bg-white col-span-3 grow">
-          {/* language */}
           <div className="md:my-2 flex flex-col md:flex-row md:justify-between md:px-8 ">
             <LanguageChoice />
-            {!userCtx.loggedInUser && <RoleButtons />}
+            {!userCtx.isLoggedIn() && <RoleButtons />}
           </div>
-          {/* main content */}
+
           <main>
             <Routes>
               <Route path="/" element={<Navigate to="/login" />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup/*" element={<SignUpPage />}>
                 <Route path="*" element={<Navigate to="basic_info" />} />
-
                 <Route path="basic_info" element={<BasicInfoPage />} />
-
                 {formCtx.formCheckPoint >= 2 && (
                   <Route path="address" element={<AddressPage />} />
                 )}
@@ -55,16 +50,12 @@ function App() {
                   <Route path="password" element={<CreatePasswordPage />} />
                 )}
               </Route>
-
-              {userCtx.loggedInUser && (
+              {userCtx.isLoggedIn() && (
                 <Route path="/profile" element={<ProfilePage />} />
               )}
-
-              {userCtx.loggedInUser &&
-                userCtx.loggedInUser.role === "admin" && (
-                  <Route path="/student-list" element={<StudentListPage />} />
-                )}
-
+              {userCtx.isLoggedIn() && (
+                <Route path="/student-list" element={<StudentListPage />} />
+              )}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </main>

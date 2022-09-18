@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import ListIcon from "../../assets/ListIcon";
+import UserIcon from "../../assets/UserIcon";
 
 const ProfileNavigation = () => {
   let buttonStyle = (isActive: boolean) =>
@@ -16,13 +18,19 @@ const ProfileNavigation = () => {
         className={(navData) => buttonStyle(navData.isActive)}
         to="/student-list"
       >
-        Student
+        <span className="mr-2">
+          <ListIcon />
+        </span>
+        Student List
       </NavLink>
 
       <NavLink
         className={(navData) => buttonStyle(navData.isActive)}
         to="/profile"
       >
+        <span className="mr-2">
+          <UserIcon />
+        </span>
         Profile
       </NavLink>
     </div>

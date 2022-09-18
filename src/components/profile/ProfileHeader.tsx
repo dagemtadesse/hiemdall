@@ -3,27 +3,26 @@ import React from "react";
 import doug from "../../assets/avatar.jpg";
 import { User } from "../../store/UserContext";
 import UploadImage from "../inputs/UploadImage";
+import ProfileNavigation from "./ProfileNavigation";
 
 type ProfileHeaderProps = {
-  role: "admin" | "student";
   user: User;
+  active?: boolean;
 };
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ role, user }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
   const statusStyle = classNames({
     "font-bold capitalize": true,
-    "text-green-900": user.academicStatus === 'promoted',
-    "text-red-900": user.academicStatus === 'failed',
-    "text-gray-700": user.academicStatus === 'unknown',
+    "text-green-900": user.academicStatus === "promoted",
+    "text-red-900": user.academicStatus === "failed",
+    "text-gray-700": user.academicStatus === "unknown",
   });
   return (
     <>
       <div className="w-full h-[150px] bg-darkBrown ">
-        {/* {active && ( */}
         <div className="max-w-4xl mx-auto flex  flex-col-reverse md:flex-col justify-end md:justify-between h-full items-end p-0 md:p-4">
           <UploadImage />
-
-          {/* {userCtx.loggedInUser.role === "admin" && <ProfileNavigation />} */}
+          {user.role === "admin" && <ProfileNavigation />}
         </div>
       </div>
 
@@ -35,12 +34,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ role, user }) => {
           <div className="text-sm m-2  ml-1 md:mt-0">
             <h2 className="font-medium">{user.fullName}</h2>
             <p className="text-gray-900 mt-0.5">
-              {role === "admin" && (
+              {user.role === "admin" && (
                 <span className="font-mediumd text-sm font-bold uppercase">
                   Admin
                 </span>
               )}
-              {role === "student" && (
+              {user.role === "student" && (
                 <>
                   <span>
                     {user.department}, level {user.level}

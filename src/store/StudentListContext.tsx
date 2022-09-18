@@ -1,15 +1,9 @@
 import React, { createContext, useState } from "react";
-
-export type Student = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  department: string;
-  level: number;
-};
+import { STUDENTLIST } from "../dummy-data";
+import { User } from "./UserContext";
 
 export const StudentListContext = createContext({
-  students: [] as Student[],
+  students: [] as User[],
   fetchStudents: async (): Promise<string | undefined> => {
     return;
   },
@@ -22,7 +16,7 @@ export const StudentListContext = createContext({
 });
 
 export const StudentListContextProvider = ({ children }: any) => {
-  const [students, setStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<User[]>([]);
 
   const removeStudent = (id: string) => {
     setStudents((students) => students.filter((student) => student.id !== id));
@@ -36,7 +30,7 @@ export const StudentListContextProvider = ({ children }: any) => {
         throw new Error();
       }
       const students = await response.json();
-      setStudents(students);
+      setStudents(STUDENTLIST);
     } catch (error) {
       return "Unable to fetch student list.";
     }

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import isEmail from "validator/lib/isEmail";
+import { ADMIN, STUDENT } from "../dummy-data";
 
 const token = "token";
 
 export type User = {
+  id: string;
   fullName: string;
   phone: string;
   email: string;
@@ -16,6 +18,17 @@ export type User = {
   academicStatus: "promoted" | "failed" | "unknown";
 };
 
+export type Admin = {
+  id: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  sex: string;
+  dateOfBirth: string;
+  avatar: string;
+  role: "admin"
+}
+
 export const UserContext = React.createContext({
   role: "student",
   loggedInUser: null as any,
@@ -27,12 +40,13 @@ export const UserContext = React.createContext({
   signup: async (userData: any): Promise<string | undefined> => undefined,
   fetchUser: async (): Promise<string | undefined> => undefined,
   updateUser: async (data: any): Promise<string | undefined> => undefined,
+  isLoggedIn: (): boolean => false,
   logout: () => {},
 });
 
 const UserContextProvider = ({ children }: any) => {
-  const [role, setRole] = useState("Student");
-  const [loggedInUser, setLoggedInUser] = useState<any | undefined>();
+  const [role, setRole] = useState("student");
+  const [loggedInUser, setLoggedInUser] = useState<User | Admin | null>();
 
   const handleLogin = async (emailOrPhone: string, password: string) => {
     const loginURL = "https://jsonplaceholder.typicode.com/users";
@@ -55,7 +69,7 @@ const UserContextProvider = ({ children }: any) => {
       }
 
       const data = await response.json();
-      setLoggedInUser({ ...data, role });
+      setLoggedInUser(role === 'student' ? STUDENT : ADMIN);
       localStorage.setItem(token, data.token);
     } catch (error) {
       return "Unable to login please try again.";
@@ -76,7 +90,7 @@ const UserContextProvider = ({ children }: any) => {
         return "Unable to regsiter.";
       }
       const user = await response.json();
-      setLoggedInUser(user);
+      setLoggedInUser(STUDENT);
       localStorage.setItem(token, user.token);
     } catch (error) {
       return "Unable to regsiter.";
@@ -96,7 +110,7 @@ const UserContextProvider = ({ children }: any) => {
         throw new Error();
       }
       const user = await response.json();
-      setLoggedInUser(user);
+      setLoggedInUser(role === 'student' ? STUDENT : ADMIN);
     } catch (error) {
       return "Unable to load user data.";
     }
@@ -116,7 +130,7 @@ const UserContextProvider = ({ children }: any) => {
         throw new Error();
       }
       const user = await response.json();
-      setLoggedInUser(user);
+      setLoggedInUser(role === 'student' ? STUDENT : ADMIN);
     } catch (error) {
       return "Unable to update user profile.";
     }
@@ -133,6 +147,7 @@ const UserContextProvider = ({ children }: any) => {
         signup: handleSignup,
         fetchUser,
         updateUser,
+        isLoggedIn: () => !!localStorage.getItem(token)
       }}
     >
       {children}

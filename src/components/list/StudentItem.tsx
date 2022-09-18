@@ -1,11 +1,12 @@
 import classNames from "classnames";
 import React, { useContext } from "react";
 import NotificationContext from "../../store/NotificationContext";
-import StudentListContext, { Student } from "../../store/StudentListContext";
+import StudentListContext from "../../store/StudentListContext";
+import { User } from "../../store/UserContext";
 
 type StudentItemProps = {
   no: number;
-  student: Student;
+  student: User;
 };
 
 const StudentItem = ({ no, student }: StudentItemProps) => {
@@ -21,7 +22,7 @@ const StudentItem = ({ no, student }: StudentItemProps) => {
     return async () => {
       const error = await studentListCtx.gradeStudent(student.id, promote);
       if (error) notificationCtx.setNotification(error);
-      let message = (promote ? "Promoted " : "Failed ") + student.firstName + ".";
+      let message = (promote ? "Promoted " : "Failed ") + student.fullName + ".";
       notificationCtx.setNotification(message, promote ? "success" : "failure");
     };
   };
@@ -30,7 +31,7 @@ const StudentItem = ({ no, student }: StudentItemProps) => {
     <li className={listStyle}>
       <p className="col-span-7 text-ellipsis whitespace-nowrap overflow-hidden md:col-span-4 text-base text-gray-700">
         <span className="inline-block w-10">{no}.</span>{" "}
-        {student.firstName + " " + student.lastName}
+        {student.fullName}
       </p>
 
       <p className="col-span-5 text-ellipsis whitespace-nowrap overflow-hidden md:col-span-4 text-sm text-gray-500">

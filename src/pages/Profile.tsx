@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ProfileHeader from "../components/profile/ProfileHeader";
 import ProfileItem from "../components/profile/ProfileItem";
 import { ProgressIndicator } from "../components/ui/RequestIndicator";
+import useLoadUser from "../hooks/UserLoader";
 import NotificationContext from "../store/NotificationContext";
 import { UserContext } from "../store/UserContext";
 import notEmptyValidator, {
@@ -46,24 +47,13 @@ const editableProfileItems = [
 
 const ProfilePage = () => {
   const userCtx = useContext(UserContext);
-  const notificationCtx = useContext(NotificationContext);
-
-  const [isLoading, setIsLoding] = useState(true);
-
-  useEffect(() => {
-    if (!userCtx.loggedInUser) {
-      userCtx.fetchUser().then((errorMsg) => {
-        if (errorMsg) notificationCtx.setNotification(errorMsg, "error");
-        setIsLoding(false);
-      });
-    }
-  }, []);
+  const isLoading = useLoadUser();
 
   return (
     <>
       {userCtx.loggedInUser && (
         <>
-          <ProfileHeader user={userCtx.loggedInUser} role={"student"} />
+          <ProfileHeader user={userCtx.loggedInUser} />
           <div className="max-w-4xl mx-auto">
             <div className="mt-6">
               {editableProfileItems.map((data) => (
