@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../store/UserContext";
 import NotificationContext from "../store/NotificationContext";
 
@@ -7,14 +7,16 @@ const useLoadUser = () => {
   const notificationCtx = useContext(NotificationContext);
 
   const [isLoading, setIsLoding] = useState(false);
-  
-  if (!userCtx.loggedInUser) {
-    setIsLoding(true);
-    userCtx.fetchUser().then((errorMsg) => {
-      setIsLoding(false);
-      if (errorMsg) notificationCtx.setNotification(errorMsg, "error");
-    });
-  }
+
+  useEffect(() => {
+    if (!userCtx.loggedInUser) {
+      setIsLoding(true);
+      userCtx.fetchUser().then((errorMsg) => {
+        setIsLoding(false);
+        if (errorMsg) notificationCtx.setNotification(errorMsg, "error");
+      });
+    }
+  }, []);
 
   return isLoading;
 };
