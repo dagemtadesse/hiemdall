@@ -21,7 +21,7 @@ app.use(morgan('dev'))
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use((req, res) => {
-  res.status(500).json({ data: 'Router Not found' })
+  res.status(500).json({ data: 'Requested Resource Not found' })
 })
 
 export const start = async () => {

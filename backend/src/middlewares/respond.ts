@@ -5,6 +5,5 @@ export const respond = async (
   res: Response,
   next: NextFunction
 ) => {
-  // console.log(res.locals)
   res.status(res.locals.json.statusCode).json(res.locals.json)
 }
