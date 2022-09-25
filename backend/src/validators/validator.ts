@@ -8,13 +8,8 @@ export const validatePhone = (userPhoneNum) => {
 
 export const validatePassword = (passwrd) => {
   const complexityOptions = {
-    min: 8,
-    max: 30,
-    lowercase: 1,
-    uppercase: 1,
-    numeric: 1,
-    symbol: 1,
-    requirementCount: 3
+    min: 4,
+    max: 30
   }
 
   const label = 'Password'

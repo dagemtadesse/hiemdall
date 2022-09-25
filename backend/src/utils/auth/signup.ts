@@ -36,6 +36,7 @@ export const signUpWithEmail = async (
   }
   const user = {
     email,
+    phoneNumber,
     password,
     firstName,
     lastName,
@@ -44,7 +45,7 @@ export const signUpWithEmail = async (
     nationality,
     program
   }
-  const result = validateInput(user)
+  const result = validateInputwithEmail(user)
   if (result.error) {
     res.locals.json = {
       statusCode: 400,
@@ -55,6 +56,7 @@ export const signUpWithEmail = async (
   try {
     const newUser = await createUser(
       email,
+      phoneNumber,
       password,
       firstName,
       lastName,
@@ -128,6 +130,7 @@ export const signUpWithPhone = async (req, res) => {
     const hashedPassword = await encrypt(password)
     const OTPGenerated = generateOTP(6)
     const newUser = await User.create({
+      email,
       phoneNumber,
       password: hashedPassword,
       firstName,
@@ -189,14 +192,10 @@ export const verifyEmail = async (
   return next()
 }
 
-function validateInput(user) {
+function validateInputwithEmail(user) {
   const complexityOptions = {
-    min: 8,
+    min: 4,
     max: 30,
-    lowercase: 1,
-    uppercase: 1,
-    numeric: 1,
-    symbol: 1,
     requirementCount: 3
   }
 
@@ -205,6 +204,7 @@ function validateInput(user) {
     firstName: Joi.string().min(1).max(55).required(),
     lastName: Joi.string().min(1).max(55).required(),
     email: Joi.string().min(5).max(255).required().email(),
+
     password: passwordComplexity(complexityOptions, label) // This is not working
   })
   return schema.validate(user)
@@ -250,6 +250,7 @@ export const resendCode = async (
 
 const createUser = async (
   email: String,
+  phoneNumber: String,
   password: String,
   firstName: String,
   lastName: String,
@@ -262,6 +263,7 @@ const createUser = async (
   const OTPGenerated = generateOTP(6)
   const newUser = await User.create({
     email,
+    phoneNumber,
     password: hashedPassword,
     firstName,
     lastName,
