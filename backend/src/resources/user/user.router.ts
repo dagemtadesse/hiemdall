@@ -5,7 +5,10 @@ import {
   fetchAllUsers,
   fetchUserByEmail,
   updateUser,
-  fetchUserById
+  fetchUserById,
+  promote,
+  isAdmin,
+  updateAcademicStatus
 } from './user.controllers'
 import { respond } from '../../middlewares/respond'
 import { verifyToken } from '../../middlewares/verifyToken'
@@ -42,6 +45,27 @@ userRouter.get(
   verifyToken,
   grant_access('readOwn', 'profile'),
   fetchUserById,
+  respond
+)
+userRouter.post(
+  '/addAdmin',
+  verifyToken,
+  grant_access('update', ['student', 'profile']),
+  promote,
+  respond
+)
+userRouter.post(
+  '/updateStatus:id',
+  verifyToken,
+  grant_access('update', ['student', 'profile']),
+  updateAcademicStatus,
+  respond
+)
+userRouter.get(
+  '/isAdmin:id',
+  verifyToken,
+  grant_access('read', 'profile'),
+  isAdmin,
   respond
 )
 export = userRouter

@@ -10,6 +10,7 @@ export interface IUserInterface {
   email: String
   program: String
   level: Number
+  semester: Number
   graduationYear: Date
   password: String
   photoURL: String
@@ -66,7 +67,13 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
     level: {
       type: Number,
       enum: [1, 2, 3, 4, 5, 0],
-      default: 1,
+      default: 0,
+      required: false
+    },
+    semester: {
+      type: Number,
+      enum: [1, 2, 0],
+      default: 0,
       required: false
     },
     graduationYear: {
@@ -76,14 +83,12 @@ const userSchema: Schema<IUserInterface> = new mongoose.Schema(
 
     phoneNumber: {
       type: String,
-      required: false,
-      unique: true
+      required: false
     },
 
     email: {
       type: String,
-      required: false,
-      unique: true
+      required: false
     },
 
     password: {

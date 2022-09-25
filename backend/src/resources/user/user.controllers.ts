@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import { User, IUserInterface } from './user.model'
+import { User } from './user.model'
 import JWT from 'jsonwebtoken'
 import { OTP } from '../OTP/otp.model'
 import { generateToken } from '../../helpers/generateToken'
 import { v4 as uuidv4 } from 'uuid'
-import { userInfo } from 'os'
-import _, { range, toInteger } from 'lodash'
+import _ from 'lodash'
 import { uploadImage } from '../../helpers/uploadImage'
 import { grant_access } from '../../middlewares/access'
 
@@ -16,17 +15,29 @@ const selectionDict = {
 }
 
 const roleDict = {
-  student: 1,
-  admin: 2,
-  superadmin: 3
+  student: 0,
+  admin: 1,
+  superadmin: 2
 }
+const roles = ['student', 'admin', 'superadmin']
 
 export const fetchAllUsers = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const users = await User.find({}).select('-__v -password -role')
+  const { _id } = res.locals
+  const user = await User.findById(_id)
+  if (!user) {
+    res.locals.json = {
+      statusCode: 400,
+      message: "User doesn't exist"
+    }
+    return next()
+  }
+  const users = await User.find({
+    role: roles.slice(0, roleDict[user.role.toString() + 1])
+  }).select('-__v -password -role')
   res.locals.json = {
     statusCode: 200,
     data: users
@@ -214,12 +225,20 @@ export const updateAcademicStatus = async (
 ) => {
   try {
     const { _id } = res.locals
-    let user = await User.findByIdAndUpdate(_id, {
-      level: { $inc: 1 }
-    })
-    await user.save()
+    const { id } = req.params
+    let user = await User.findById(id)
+    if (user.semester == 1) {
+      user.set({ semester: 2 })
+    } else if (user.semester == 2 && user.level < 6) {
+      user.set({ semester: 1, level: { $inc: 1 } })
+    } else {
+      user.set({ semester: 0, level: 0 })
+    }
+    user.save()
 
-    const updatedUser = await User.findById(_id).select('-__v -password -role')
+    const updatedUser = await User.findById(id).select(
+      '-__v -password -role -isVerified -deleted'
+    )
 
     res.locals.json = {
       statusCode: 200,

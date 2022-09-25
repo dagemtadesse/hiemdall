@@ -6,14 +6,26 @@ import { sendMail } from '../../helpers/mail'
 import { IOTPInterface, OTP } from '../../resources/OTP/otp.model'
 import passwordComplexity from 'joi-password-complexity'
 import Joi from 'joi'
-import _ from 'lodash'
+import _, { isEmpty } from 'lodash'
 import { encrypt } from '../../helpers/encryptPassword'
+import { validatePassword, validatePhone } from '../../validators/validator'
+import { PhoneResult } from 'phone'
 export const signUpWithEmail = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { email, phoneNumber, password, firstName, lastName } = req.body
+  const {
+    email,
+    phoneNumber,
+    password,
+    firstName,
+    lastName,
+    graduationYear,
+    set,
+    nationality,
+    program
+  } = req.body
   const emailExists = await User.findOne({ email })
   if (emailExists) {
     res.locals.json = {
@@ -26,7 +38,11 @@ export const signUpWithEmail = async (
     email,
     password,
     firstName,
-    lastName
+    lastName,
+    graduationYear,
+    set,
+    nationality,
+    program
   }
   const result = validateInput(user)
   if (result.error) {
@@ -37,18 +53,103 @@ export const signUpWithEmail = async (
     return next()
   }
   try {
-    const newUser = await createUser(email, password, firstName, lastName)
+    const newUser = await createUser(
+      email,
+      password,
+      firstName,
+      lastName,
+      graduationYear,
+      set,
+      nationality,
+      program
+    )
     res.locals.json = {
       statusCode: 201,
       data: newUser
     }
   } catch (error) {
+    console.log('this is the thing')
     res.locals.json = {
       statusCode: 400,
       message: error.message
     }
   }
   return next()
+}
+
+export const signUpWithPhone = async (req, res) => {
+  const {
+    email,
+    phoneNumber,
+    password,
+    firstName,
+    lastName,
+    graduationYear,
+    set,
+    nationality,
+    program
+  } = req.body
+  const validate: PhoneResult = validatePhone(phoneNumber)
+  if (validate.isValid == false) {
+    return res.status(400).json({
+      statusCode: 400,
+      message: 'Not valid phone number'
+    })
+  }
+  const user = {
+    email,
+    phoneNumber,
+    password,
+    firstName,
+    lastName,
+    graduationYear,
+    set,
+    nationality,
+    program
+  }
+  const inputValidation: Joi.ValidationResult<any> = validatePassword(user)
+  if (inputValidation.error) {
+    return res.status(400).json({
+      statusCode: 400,
+      message: inputValidation.error.details[0].message
+    })
+  }
+  const userExists = await User.find({
+    phoneNumber: phoneNumber
+  })
+
+  if (!isEmpty(userExists)) {
+    return res.status(400).json({
+      statusCode: 400,
+      message: 'User is already registerd'
+    })
+  }
+  try {
+    const hashedPassword = await encrypt(password)
+    const OTPGenerated = generateOTP(6)
+    const newUser = await User.create({
+      phoneNumber,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      graduationYear,
+      set,
+      nationality,
+      program
+    })
+    const otp = await OTP.create({
+      email: email,
+      otpCode: OTPGenerated
+    })
+    const info = await sendMail({
+      to: email,
+      OTP: OTPGenerated,
+      type: 'OTP'
+    })
+    return _.pick(newUser, ['phoneNumber', 'firstName', 'lastName'])
+  } catch (error) {
+    return error.message
+  }
 }
 
 export const verifyEmail = async (
@@ -151,7 +252,11 @@ const createUser = async (
   email: String,
   password: String,
   firstName: String,
-  lastName: String
+  lastName: String,
+  graduationYear: Date,
+  set: String,
+  nationality: String,
+  program: String
 ) => {
   const hashedPassword = await encrypt(password)
   const OTPGenerated = generateOTP(6)
@@ -159,7 +264,11 @@ const createUser = async (
     email,
     password: hashedPassword,
     firstName,
-    lastName
+    lastName,
+    graduationYear,
+    set,
+    nationality,
+    program
   })
   const otp = await OTP.create({
     email: email,
