@@ -1,37 +1,31 @@
-import React from "react";
-import SearchIcon from "../assets/search";
-import StudentItem from "../components/list/StudentItem";
+import React, { useState, useContext } from "react";
+
+import StudentList from "../components/list/StudentList";
+import StudentSearchFilter from "../components/list/StudentSearchFilter";
 import ProfileHeader from "../components/profile/ProfileHeader";
+import { ProgressIndicator } from "../components/ui/RequestIndicator";
+import useLoadUser from "../hooks/UserLoader";
+import { StudentListContextProvider } from "../store/StudentListContext";
+import { UserContext } from "../store/UserContext";
 
 const StudentListPage = () => {
-  return (
-    <>
-      <ProfileHeader name="Douglas Bartholomew" role="admin" active={false} />
-      <div className="max-w-4xl mx-auto">
-        <div>
-          <div className="border-b border-gray-200 w-1/3 ml-auto">
-            <input
-              type="text"
-              className="w-full p-1.5 focus:outline-0"
-              placeholder="Search for students here"
-            />
-            <button className="-ml-5">
-              <SearchIcon />
-            </button>
-          </div>
+  const isLoading = useLoadUser();
+  const userCtx = useContext(UserContext);
+  const [query, setQuery] = useState("");
 
-          <ul className="mt-6">
-            {[1, 2, 3, 4].map((num) => (
-              <StudentItem
-                no={num}
-                name="Abraham Abrarw"
-                department="Wood Work"
-              />
-            ))}
-          </ul>
-        </div>
-      </div>
-    </>
+  return (
+    <StudentListContextProvider>
+      {userCtx.loggedInUser && (
+        <>
+          <ProfileHeader user={userCtx.loggedInUser} />
+          <div className="max-w-4xl md:mx-auto mx-2">
+            <StudentSearchFilter query={query} setQuery={setQuery} />
+            <StudentList filter={query} />
+          </div>
+        </>
+      )}
+      {isLoading && <ProgressIndicator />}
+    </StudentListContextProvider>
   );
 };
 

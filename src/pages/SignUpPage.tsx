@@ -1,7 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Input from "../components/ui/Inputs";
+import NotificationPopup from "../components/ui/Notification";
 import SignUpProgress from "../components/ui/SignUpProgress";
+import FormContextProvider from "../store/FormContext";
 
 const SignUpPage = () => {
   return (
@@ -20,7 +21,7 @@ const SignUpPage = () => {
           </p>
         </div>
 
-        <div className="flex items-start">
+        <div className="flex flex-col-reverse md:flex-row md:items-start">
           {/* forms */}
           <Outlet />
           {/* progress */}

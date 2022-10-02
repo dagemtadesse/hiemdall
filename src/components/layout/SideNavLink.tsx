@@ -9,7 +9,7 @@ type SideNavLinkProps = {
 
 const SideNavLink = ({ icon, link, label }: SideNavLinkProps) => {
   let linkStyle =
-    "border-2 border-gray-900 md:px-6 py-2  rounded-full md:ml-12 md:mt-10 inline-block";
+    "border-2 border-gray-900 md:px-6 py-2 px-3  rounded-full md:ml-12 md:mt-10 inline-block";
 
   return (
     <NavLink
